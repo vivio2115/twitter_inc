@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import useFollow from "../../hooks/useFollow";
-
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
-import LoadingSpinner from "./LoadingSpinner";
 
 const RightPanel = () => {
 	const { data: suggestedUsers, isLoading } = useQuery({
@@ -23,28 +20,24 @@ const RightPanel = () => {
 		},
 	});
 
-	const { follow, isPending } = useFollow();
-
-	if (suggestedUsers?.length === 0) return <div className='md:w-64 w-0'></div>;
-
 	const officialAccounts = [
 		{
 			_id: "665f35adf243be6874dd2550",
 			username: "CountyofDouglas",
 			fullName: "County of Douglas",
-			profileImg: "/countyofdouglas.png",
+			profileImg: "https://res.cloudinary.com/dmnwvcqsw/image/upload/v171371803/sebjczu8...", // Example URL
 		},
 		{
 			_id: "665f350f5047cc8a5ab262a1",
 			username: "TimGardner",
 			fullName: "Tim Gardner",
-			profileImg: "/timgardner.png",
+			profileImg: "https://res.cloudinary.com/dmwmvcqsw/image/upload/v1717537666/mt1lbv5uhyfoymkznn4u.jpg", // Example URL
 		},
 		{
 			_id: "665f8a4afc9b39657ec73d92",
 			username: "twitter_inc",
 			fullName: "Twitter Inc.",
-			profileImg: "/twitterinc.png",
+			profileImg: "https://res.cloudinary.com/dmwmvcqsw/image/upload/v1717540077/moarwjdqodyl8i0t0tq2.jpg", // Example URL
 		},
 	];
 
@@ -62,7 +55,7 @@ const RightPanel = () => {
 							<div className='flex gap-2 items-center'>
 								<div className='avatar'>
 									<div className='w-8 rounded-full'>
-										<img src={user.profileImg || "/avatar-placeholder.png"} />
+										<img src={user.profileImg || "/avatar-placeholder.png"} alt={`${user.fullName}'s avatar`} />
 									</div>
 								</div>
 								<div className='flex flex-col'>
@@ -73,22 +66,18 @@ const RightPanel = () => {
 								</div>
 							</div>
 							<div>
-								<button
+								<Link
+									to={`/profile/${user.username}`}
 									className='btn bg-white text-black hover:bg-white hover:opacity-90 rounded-full btn-sm'
-									onClick={(e) => {
-										e.preventDefault();
-										follow(user._id);
-									}}
 								>
-									{isPending ? <LoadingSpinner size='sm' /> : "Follow"}
-								</button>
+									Open
+								</Link>
 							</div>
 						</Link>
 					))}
 				</div>
 				<p className='font-bold'>Who to follow</p>
 				<div className='flex flex-col gap-4'>
-					{/* item */}
 					{isLoading && (
 						<>
 							<RightPanelSkeleton />
@@ -97,8 +86,8 @@ const RightPanel = () => {
 							<RightPanelSkeleton />
 						</>
 					)}
-					{!isLoading &&
-						suggestedUsers?.map((user) => (
+					{!isLoading && suggestedUsers?.length > 0 ? (
+						suggestedUsers.map((user) => (
 							<Link
 								to={`/profile/${user.username}`}
 								className='flex items-center justify-between gap-4'
@@ -107,7 +96,7 @@ const RightPanel = () => {
 								<div className='flex gap-2 items-center'>
 									<div className='avatar'>
 										<div className='w-8 rounded-full'>
-											<img src={user.profileImg || "/avatar-placeholder.png"} />
+											<img src={user.profileImg || "/avatar-placeholder.png"} alt={`${user.fullName}'s avatar`} />
 										</div>
 									</div>
 									<div className='flex flex-col'>
@@ -118,18 +107,18 @@ const RightPanel = () => {
 									</div>
 								</div>
 								<div>
-									<button
+									<Link
+										to={`/profile/${user.username}`}
 										className='btn bg-white text-black hover:bg-white hover:opacity-90 rounded-full btn-sm'
-										onClick={(e) => {
-											e.preventDefault();
-											follow(user._id);
-										}}
 									>
-										{isPending ? <LoadingSpinner size='sm' /> : "Follow"}
-									</button>
+										Open
+									</Link>
 								</div>
 							</Link>
-						))}
+						))
+					) : (
+						<div className='text-sm text-slate-500'>No suggestions available</div>
+					)}
 				</div>
 			</div>
 		</div>
