@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
+import { isVerified } from '../../utils';
 
 const RightPanel = () => {
 	const { data: suggestedUsers, isLoading } = useQuery({
@@ -25,7 +25,7 @@ const RightPanel = () => {
 			_id: "665f35adf243be6874dd2550",
 			username: "CountyofDouglas",
 			fullName: "County of Douglas",
-			profileImg: "https://res.cloudinary.com/dmwmvcqsw/image/upload/v1717515720/h8hf0s5nk7mtthrwq3x6.jpg", // Example URL
+			profileImg: "https://res.cloudinary.com/dmnwvcqsw/image/upload/v171371803/sebjczu8...", // Example URL
 		},
 		{
 			_id: "665f350f5047cc8a5ab262a1",
@@ -40,6 +40,12 @@ const RightPanel = () => {
 			profileImg: "https://res.cloudinary.com/dmwmvcqsw/image/upload/v1717540077/moarwjdqodyl8i0t0tq2.jpg", // Example URL
 		},
 	];
+
+	const VerifiedIcon = () => (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-4 h-4 inline-block ml-1">
+			<path fill="#74C0FC" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
+		</svg>
+	);
 
 	return (
 		<div className='hidden lg:block my-4 mx-2'>
@@ -61,6 +67,7 @@ const RightPanel = () => {
 								<div className='flex flex-col'>
 									<span className='font-semibold tracking-tight truncate w-28'>
 										{user.fullName}
+										{isVerified(user._id) && <VerifiedIcon />}
 									</span>
 									<span className='text-sm text-slate-500'>@{user.username}</span>
 								</div>
