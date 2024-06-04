@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 
 import LoadingSpinner from "./LoadingSpinner";
 import { formatPostDate } from "../../utils/date";
+import { isVerified } from '../../utils';
 
 const Post = ({ post }) => {
 	const [comment, setComment] = useState("");
@@ -60,10 +61,6 @@ const Post = ({ post }) => {
 			}
 		},
 		onSuccess: (updatedLikes) => {
-			// this is not the best UX, bc it will refetch all posts
-			// queryClient.invalidateQueries({ queryKey: ["posts"] });
-
-			// instead, update the cache directly for that post
 			queryClient.setQueryData(["posts"], (oldData) => {
 				return oldData.map((p) => {
 					if (p._id === post._id) {
@@ -123,6 +120,12 @@ const Post = ({ post }) => {
 		likePost();
 	};
 
+	const VerifiedIcon = () => (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-4 h-4 inline-block ml-1">
+			<path fill="#74C0FC" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
+		</svg>
+	);
+
 	return (
 		<>
 			<div className='flex gap-2 items-start p-4 border-b border-gray-700'>
@@ -135,6 +138,7 @@ const Post = ({ post }) => {
 					<div className='flex gap-2 items-center'>
 						<Link to={`/profile/${postOwner.username}`} className='font-bold'>
 							{postOwner.fullName}
+							{isVerified(postOwner._id) && <VerifiedIcon />}
 						</Link>
 						<span className='text-gray-700 flex gap-1 text-sm'>
 							<Link to={`/profile/${postOwner.username}`}>@{postOwner.username}</Link>
@@ -172,7 +176,6 @@ const Post = ({ post }) => {
 									{post.comments.length}
 								</span>
 							</div>
-							{/* We're using Modal Component from DaisyUI */}
 							<dialog id={`comments_modal${post._id}`} className='modal border-none outline-none'>
 								<div className='modal-box rounded border border-gray-600'>
 									<h3 className='font-bold text-lg mb-4'>COMMENTS</h3>
@@ -253,4 +256,5 @@ const Post = ({ post }) => {
 		</>
 	);
 };
+
 export default Post;
