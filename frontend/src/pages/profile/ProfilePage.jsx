@@ -16,7 +16,6 @@ import { formatMemberSinceDate } from "../../utils/date";
 
 import useFollow from "../../hooks/useFollow";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
-import { isVerified } from '../../utils';
 
 const ProfilePage = () => {
 	const [coverImg, setCoverImg] = useState(null);
@@ -173,7 +172,6 @@ const ProfilePage = () => {
 								<div className='flex flex-col'>
 									<span className='font-bold text-lg'>
 										{user?.fullName}
-										{isVerified(user._id) && <VerifiedIcon />}
 									</span>
 									<span className='text-sm text-slate-500'>@{user?.username}</span>
 									<span className='text-sm my-1'>{user?.bio}</span>
