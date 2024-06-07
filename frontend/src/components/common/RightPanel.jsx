@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
-import { isVerified } from '../../utils';
+
 
 const RightPanel = () => {
 	const { data: suggestedUsers, isLoading } = useQuery({
@@ -67,7 +67,6 @@ const RightPanel = () => {
 								<div className='flex flex-col'>
 									<span className='font-semibold tracking-tight truncate w-28'>
 										{user.fullName}
-										{isVerified(user._id) && <VerifiedIcon />}
 									</span>
 									<span className='text-sm text-slate-500'>@{user.username}</span>
 								</div>
