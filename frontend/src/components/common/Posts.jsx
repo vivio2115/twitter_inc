@@ -10,7 +10,6 @@ import { toast } from "react-hot-toast";
 
 import LoadingSpinner from "./LoadingSpinner";
 import { formatPostDate } from "../../utils/date";
-import { isVerified } from '../../utils';
 
 const Post = ({ post }) => {
 	const [comment, setComment] = useState("");
@@ -138,7 +137,6 @@ const Post = ({ post }) => {
 					<div className='flex gap-2 items-center'>
 						<Link to={`/profile/${postOwner.username}`} className='font-bold'>
 							{postOwner.fullName}
-							{isVerified(postOwner._id) && <VerifiedIcon />}
 						</Link>
 						<span className='text-gray-700 flex gap-1 text-sm'>
 							<Link to={`/profile/${postOwner.username}`}>@{postOwner.username}</Link>
